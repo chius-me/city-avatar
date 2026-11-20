@@ -3,6 +3,7 @@ import { Download, RotateCcw, Trash2, X } from 'lucide-react';
 import { BACKDROP_PRESETS, type Locale } from '../data/presets';
 import { UI_TEXT, pickText } from '../data/i18n';
 import type { SavedAvatarItem } from '../utils/galleryDb';
+import { CityDots } from './city-shell';
 
 interface HistoryDrawerProps {
   open: boolean;
@@ -50,12 +51,7 @@ export const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
         <div className="city-drawer-head">
           <div className="city-drawer-title-row">
             <h2>{t.galleryTitle}</h2>
-            <span className="city-dots" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-              <span />
-            </span>
+            <CityDots />
           </div>
 
           <div className="city-drawer-head-actions">

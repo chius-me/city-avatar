@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Compass, ExternalLink, Images, Sparkles } from 'lucide-react';
 import type { Locale } from '../data/presets';
 import { UI_TEXT } from '../data/i18n';
-import { CityLogo, MiminekoMascot } from './CityLogo';
+import {
+  CITY_EXTERNAL_LINKS,
+  CITY_SITES,
+  CityMenuOverlay,
+  type CityMenuTile,
+} from './city-shell';
 
 interface MenuOverlayProps {
   open: boolean;
@@ -20,113 +25,50 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({
   onOpenGallery,
 }) => {
   const t = UI_TEXT[locale];
+  const socialMapSite = CITY_SITES['social-map'];
 
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && open) onClose();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [open, onClose]);
+  const tiles: CityMenuTile[] = [
+    {
+      id: 'studio',
+      tone: 'c',
+      icon: <Sparkles size={22} strokeWidth={2.5} />,
+      title: t.menuStudio,
+      subtitle: t.menuStudioSub,
+    },
+    {
+      id: 'gallery',
+      tone: 'i',
+      icon: <Images size={22} strokeWidth={2.5} />,
+      title: t.menuGallery,
+      subtitle: `${galleryCount} items`,
+      onClick: onOpenGallery,
+    },
+    {
+      id: 'social-map',
+      tone: 't',
+      icon: <Compass size={22} strokeWidth={2.5} />,
+      title: t.menuSocialMap,
+      subtitle: `${t.menuSocialMapSub} ↗`,
+      href: socialMapSite.url,
+    },
+    {
+      id: 'official',
+      tone: 'y',
+      icon: <ExternalLink size={22} strokeWidth={2.5} />,
+      title: t.menuOfficial,
+      subtitle: `${t.menuOfficialSub} ↗`,
+      href: CITY_EXTERNAL_LINKS.officialCharacters,
+    },
+  ];
 
   return (
-    <div
-      className={`city-menu-overlay ${open ? 'is-open' : ''}`}
-      role="dialog"
-      aria-modal="true"
-      aria-label={t.menuLabel}
-      aria-hidden={!open}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div className="city-menu-overlay-inner">
-        <div className="city-menu-hero">
-          <div className="city-menu-brand">
-            <div className="city-menu-brand-row">
-              <CityLogo subtitle="AVATAR" />
-              <MiminekoMascot />
-            </div>
-            <p className="city-menu-tagline">{t.tagline}</p>
-          </div>
-
-          <div className="city-menu-tiles">
-            <button
-              type="button"
-              className="city-menu-tile tile-c"
-              onClick={onClose}
-            >
-              <Sparkles size={22} strokeWidth={2.5} />
-              <div>
-                <div className="tile-title">{t.menuStudio}</div>
-                <div className="tile-sub">{t.menuStudioSub}</div>
-              </div>
-            </button>
-
-            <button
-              type="button"
-              className="city-menu-tile tile-i"
-              onClick={() => {
-                onClose();
-                onOpenGallery();
-              }}
-            >
-              <Images size={22} strokeWidth={2.5} />
-              <div>
-                <div className="tile-title">{t.menuGallery}</div>
-                <div className="tile-sub">{galleryCount} items</div>
-              </div>
-            </button>
-
-            <a
-              className="city-menu-tile tile-t"
-              href="https://social.city.chius.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Compass size={22} strokeWidth={2.5} />
-              <div>
-                <div className="tile-title">{t.menuSocialMap}</div>
-                <div className="tile-sub">{t.menuSocialMapSub} ↗</div>
-              </div>
-            </a>
-
-            <a
-              className="city-menu-tile tile-y"
-              href="https://city-the-animation.com/character/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalLink size={22} strokeWidth={2.5} />
-              <div>
-                <div className="tile-title">{t.menuOfficial}</div>
-                <div className="tile-sub">{t.menuOfficialSub} ↗</div>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        <div className="city-menu-links">
-          <a
-            href="https://github.com/chius-me/awesome-citytheanimation"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="city-link-pill"
-          >
-            {t.awesomeRepo} ↗
-          </a>
-          <a
-            href="https://github.com/chius-me/city-avatar"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="city-link-pill"
-          >
-            GitHub ↗
-          </a>
-        </div>
-
-        <footer className="city-menu-footer">{t.footerDisclaimer}</footer>
-      </div>
-    </div>
+    <CityMenuOverlay
+      siteId="avatar"
+      open={open}
+      locale={locale}
+      tagline={t.tagline}
+      tiles={tiles}
+      onClose={onClose}
+    />
   );
 };

@@ -8,6 +8,7 @@ import {
 import { UI_TEXT } from './data/i18n';
 import { TopBar } from './components/TopBar';
 import { MenuOverlay } from './components/MenuOverlay';
+import { CityDots, CityFooter } from './components/city-shell';
 import { AvatarStage, type StageViewMode } from './components/AvatarStage';
 import { StylizePanel, type StylizeParams } from './components/StylizePanel';
 import { HistoryDrawer } from './components/HistoryDrawer';
@@ -324,12 +325,7 @@ export const App: React.FC = () => {
           <div className="intro-copy">
             <div className="intro-heading-row">
               <h1 className="intro-title">{t.introTitle}</h1>
-              <span className="city-dots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-              </span>
+              <CityDots />
             </div>
             <p className="intro-sub">{t.introSub}</p>
           </div>
@@ -393,25 +389,7 @@ export const App: React.FC = () => {
         </section>
       </main>
 
-      <footer className="city-footer">
-        <span>{t.footerDisclaimer}</span>
-        <span className="footer-sep">·</span>
-        <a href="https://city-the-animation.com/character/" target="_blank" rel="noreferrer">
-          {t.officialSite}
-        </a>
-        <span className="footer-sep">·</span>
-        <a href="https://social.city.chius.dev" target="_blank" rel="noreferrer">
-          {t.socialMap}
-        </a>
-        <span className="footer-sep">·</span>
-        <a
-          href="https://github.com/chius-me/awesome-citytheanimation"
-          target="_blank"
-          rel="noreferrer"
-        >
-          {t.awesomeRepo}
-        </a>
-      </footer>
+      <CityFooter siteId="avatar" locale={locale} />
 
       <HistoryDrawer
         open={drawerOpen}

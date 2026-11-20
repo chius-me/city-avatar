@@ -6,22 +6,50 @@ interface CityLogoProps {
   subtitle?: string;
 }
 
+export const CityDots: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <span className={`city-dots ${className}`.trim()} aria-hidden="true">
+    <span />
+    <span />
+    <span />
+    <span />
+  </span>
+);
+
+export const GitHubMark: React.FC<{ size?: number; className?: string }> = ({
+  size = 16,
+  className = '',
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    width={size}
+    height={size}
+    fill="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1-.02-1.96-3.2.7-3.88-1.54-3.88-1.54-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.35.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .97-.31 3.16 1.18a10.9 10.9 0 0 1 2.88-.39c.98 0 1.96.13 2.88.39 2.19-1.49 3.16-1.18 3.16-1.18.62 1.58.23 2.75.11 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14 0 1.54-.01 2.79-.01 3.17 0 .31.21.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+  </svg>
+);
+
 /**
  * Chunky black-outlined 4-color C-I-T-Y wordmark (Marigold #f7b647, Sakura #f09cb4,
- * Meadow #99cb77, Coral #ee847d) cohesive with city-social-map & city-the-animation.com.
+ * Meadow #99cb77, Coral #ee847d) adapted from city-the-animation.com.
  */
 export const CityLogo: React.FC<CityLogoProps> = ({
   className = '',
   compact = false,
-  subtitle = 'AVATAR',
+  subtitle = '',
 }) => {
+  const ariaLabel = subtitle ? `CITY ${subtitle}` : 'CITY';
   return (
-    <div className={`city-wordmark ${compact ? 'is-compact' : ''} ${className}`}>
+    <div
+      className={`city-wordmark ${compact ? 'is-compact' : ''} ${className}`.trim()}
+    >
       <svg
         viewBox="0 0 264 84"
         className="city-wordmark-svg"
         role="img"
-        aria-label="CITY AVATAR"
+        aria-label={ariaLabel}
       >
         <path
           d="M54 22 C49 12 37 8 26 11 C12 15 6 29 7 44 C8 60 18 72 34 73 C45 74 54 68 59 58 L44 49 C41 55 37 57 32 56 C25 55 22 49 22 42 C22 33 26 27 33 26 C38 25 42 28 44 32 Z"
@@ -60,24 +88,23 @@ export const CityLogo: React.FC<CityLogoProps> = ({
       {subtitle && (
         <div className="city-wordmark-sub">
           <span>{subtitle}</span>
-          <span className="city-dots" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-          </span>
+          <CityDots />
         </div>
       )}
     </div>
   );
 };
 
+/**
+ * Playful vector mascot of Mimineko (snow-white ear-cat with rabbit ears,
+ * sky-blue eyes, red collar, and golden bell).
+ */
 export const MiminekoMascot: React.FC<{ className?: string }> = ({
-  className = 'mimineko-mascot',
+  className = '',
 }) => (
   <svg
     viewBox="0 0 120 112"
-    className={className}
+    className={`mimineko-mascot ${className}`.trim()}
     role="img"
     aria-label="Mimineko"
   >

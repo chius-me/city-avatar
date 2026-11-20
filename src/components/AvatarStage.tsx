@@ -24,6 +24,7 @@ import {
   type SamplePhoto,
 } from '../data/presets';
 import { UI_TEXT, pickText } from '../data/i18n';
+import { CityDots, CityLoadingDots } from './city-shell';
 
 export type PreviewMask = 'circle' | 'rounded' | 'square';
 export type StageViewMode = 'output' | 'compare' | 'original';
@@ -690,12 +691,7 @@ export const AvatarStage: React.FC<AvatarStageProps> = ({
               <span className="stage-empty-badge">
                 <Sparkles size={13} /> PHOTO → CITY AVATAR
               </span>
-              <span className="city-dots" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-                <span />
-              </span>
+              <CityDots />
             </div>
           )}
 
@@ -782,12 +778,7 @@ export const AvatarStage: React.FC<AvatarStageProps> = ({
 
               {isGenerating && (
                 <div className="stage-loading-veil">
-                  <div className="city-loading-dots" aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                  </div>
+                  <CityLoadingDots />
                   <div className="stage-loading-title">
                     {t.generatingTitle} ({elapsedSec.toFixed(1)}s)
                   </div>
@@ -813,12 +804,7 @@ export const AvatarStage: React.FC<AvatarStageProps> = ({
               />
               {isGenerating && (
                 <div className="stage-loading-veil">
-                  <div className="city-loading-dots" aria-hidden="true">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                  </div>
+                  <CityLoadingDots />
                   <div className="stage-loading-title">
                     {t.generatingTitle} ({elapsedSec.toFixed(1)}s)
                   </div>
