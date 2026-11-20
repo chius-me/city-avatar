@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "city-avatar",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-11-19",
+  "upload_source_maps": true,
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  },
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "binding": "ASSETS"
+  },
+  "ai": {
+    "binding": "AI",
+    "remote": true
+  },
+  "routes": [
+    {
+      "pattern": "avatar.city.chius.dev",
+      "custom_domain": true
+    }
+  ]
+}
