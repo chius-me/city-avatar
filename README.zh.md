@@ -9,6 +9,7 @@
 上传任意人物、宠物或生物照片，通过 Cloudflare Workers AI 一键风格化为 ***CITY THE ANIMATION*** 官网角色同款头像。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Deploy](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
 ![Workers AI](https://img.shields.io/badge/Workers%20AI-FLUX.2-f38020?logo=cloudflare&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -76,6 +77,8 @@ npm run typecheck  # 执行严格 TypeScript 检查
 npm run build      # 类型检查并构建 Worker 与前端产物
 npm run deploy     # 构建并部署至 Cloudflare Workers
 ```
+
+推送至 `main` 分支也会自动触发 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)，在 GitHub Actions 中自动生成绑定类型、构建并部署至 Cloudflare Workers（需在仓库配置 `CLOUDFLARE_API_TOKEN` 与 `CLOUDFLARE_ACCOUNT_ID` 两个 Secrets；`TURNSTILE_SECRET` 则保存在 Cloudflare Worker Secret 中）。
 
 ## 参考与致谢
 

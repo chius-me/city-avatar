@@ -9,6 +9,7 @@
 Turn any photo of a person, pet, or creature into a ***CITY THE ANIMATION*** official-style avatar with Cloudflare Workers AI.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Deploy](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
 ![Workers AI](https://img.shields.io/badge/Workers%20AI-FLUX.2-f38020?logo=cloudflare&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
@@ -76,6 +77,8 @@ npm run typecheck  # Run strict TypeScript checks
 npm run build      # Type-check & build Worker + client bundle
 npm run deploy     # Build and deploy to Cloudflare Workers
 ```
+
+Pushing to `main` also triggers [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) to regenerate Worker types, build, and deploy automatically via repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (`TURNSTILE_SECRET` remains stored as a Cloudflare Worker secret).
 
 ## Credits & Sources
 
