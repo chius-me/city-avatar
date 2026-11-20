@@ -39,22 +39,39 @@ Turn any photo of a person, pet, or creature into a ***CITY THE ANIMATION*** off
 ```text
 Browser (React + Vite)
   ├── Resize upload to <=768px JPEG + create 180px thumbnail
+  ├── Complete Cloudflare Turnstile (interaction-only)
   ├── POST /api/stylize ──▶ Cloudflare Worker
-  │                           ├── Load matched C-I-T-Y star-pattern ref (ASSETS)
-  │                           └── Run Workers AI FLUX.2 multipart inference
+  │                           ├── Same-origin + image magic-bytes checks
+  │                           ├── Edge burst RateLimit (STYLE_BURST_LIMITER)
+  │                           ├── Turnstile server-side Siteverify
+  │                           ├── SQLite Durable Object (QuotaGuard):
+  │                           │   concurrency lock, per-IP credits & global budget
+  │                           └── Workers AI FLUX.2 multipart inference
   │                               (flux-2-klein-4b / flux-2-klein-9b / flux-2-dev)
   └── Real-time 1024×1024 HTML5 Canvas masks, frames, Before/After slider & IndexedDB gallery
 ```
 
-No server-side database is required. All image preparation, canvas decoration, and creation history live locally in the browser, while the Cloudflare Worker handles multipart image-to-image inference via `env.AI`.
+No external database is required. All image preparation, canvas decoration, and creation history live locally in the browser, while the Cloudflare Worker enforces security checks, coordinates daily quotas in SQLite Durable Objects, and runs multipart inference via `env.AI`.
+
+## Quota & Abuse Protection
+
+To protect Workers AI Neurons against automated scraping and cross-site abuse, `/api/stylize` enforces five layered defenses:
+
+- **Cloudflare Turnstile**: Managed widget verification checked server-side against `siteverify` (`action` and production hostname validated).
+- **Same-Origin & Payload Guard**: Rejects cross-origin `POST` requests without matching `Origin`/`Sec-Fetch-Site`, validates decoded PNG/JPEG/WebP magic bytes, and enforces a 4 MiB image / 6 MiB body cap.
+- **Edge Burst Limiter**: Workers `ratelimits` binding (`STYLE_BURST_LIMITER`, 4 req / 60s per IP) drops rapid floods at the edge before verification or inference runs.
+- **Weighted Daily Credits & Global Breaker (`QuotaGuard`)**: SQLite-backed Durable Object enforces 1 active request per IP, **12 credits / UTC day** per hashed IP (`4B` = 1 pt, `Dev` = 4 pts, `9B` = 5 pts) with automatic refunds on upstream failures, and a site-wide **8,500 Neurons / UTC day** ceiling.
+- **Emergency Kill Switch**: Set `GENERATION_ENABLED="false"` in Worker vars to pause inference instantly without taking down the UI.
 
 ## Development & Deployment
 
-Node.js 22+ and a Cloudflare account (with Workers AI enabled) are required.
+Node.js 22+ and a Cloudflare account (with Workers AI and Durable Objects enabled) are required.
 
 ```bash
 npm install
+npx wrangler secret put TURNSTILE_SECRET
 npm run dev        # Start local Vite + Cloudflare Workers dev server
+npm run cf-typegen # Regenerate Worker binding types
 npm run typecheck  # Run strict TypeScript checks
 npm run build      # Type-check & build Worker + client bundle
 npm run deploy     # Build and deploy to Cloudflare Workers

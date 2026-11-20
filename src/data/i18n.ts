@@ -76,6 +76,13 @@ export interface UiDictionary {
   awesomeRepo: string;
   socialMap: string;
   uploadError: string;
+  creditUnit: string;
+  quotaStatus: string;
+  quotaInsufficient: string;
+  globalExhausted: string;
+  servicePaused: string;
+  turnstileWaiting: string;
+  turnstileRequired: string;
 }
 
 export const UI_TEXT: Record<Locale, UiDictionary> = {
@@ -151,6 +158,13 @@ export const UI_TEXT: Record<Locale, UiDictionary> = {
     awesomeRepo: 'Awesome CITY',
     socialMap: '人物关系图',
     uploadError: '读取图片失败，请尝试 PNG / JPG / WebP 格式照片。',
+    creditUnit: '点',
+    quotaStatus: '今日剩余 {rem}/{lim} 点 · 当前模型每次 {cost} 点',
+    quotaInsufficient: '今日剩余点数（{rem} 点）不足以运行当前模型（需 {cost} 点），可切换 4B 模型或明日 08:00 (UTC+8) 重置后再试。',
+    globalExhausted: '今日全站免费 AI 额度已达上限，将于明日 UTC 00:00（北京时间 08:00）自动恢复。',
+    servicePaused: '站点维护中，AI 风格化功能已暂时关闭。',
+    turnstileWaiting: '正在完成安全人机校验…',
+    turnstileRequired: '请先完成上方人机安全验证再生成',
   },
   en: {
     tagline: 'Turn any photo of yourself, a friend, or a pet into a CITY THE ANIMATION official-style avatar.',
@@ -224,6 +238,13 @@ export const UI_TEXT: Record<Locale, UiDictionary> = {
     awesomeRepo: 'Awesome CITY',
     socialMap: 'Social Map',
     uploadError: 'Could not read image. Please upload a valid PNG, JPG, or WebP file.',
+    creditUnit: 'pt',
+    quotaStatus: '{rem}/{lim} credits left today · This model uses {cost} pt(s)',
+    quotaInsufficient: 'Not enough daily credits left ({rem} pt vs {cost} pt required). Switch to 4B or wait for 00:00 UTC reset.',
+    globalExhausted: 'Daily site-wide free AI budget reached. Resets automatically at 00:00 UTC.',
+    servicePaused: 'AI generation is temporarily paused for maintenance.',
+    turnstileWaiting: 'Verifying security check…',
+    turnstileRequired: 'Complete the security verification above before generating',
   },
   ja: {
     tagline: '人物やペット・生き物の写真を『CITY THE ANIMATION』公式風アイコンに変換。',
@@ -297,5 +318,12 @@ export const UI_TEXT: Record<Locale, UiDictionary> = {
     awesomeRepo: 'Awesome CITY',
     socialMap: '相関図',
     uploadError: '画像の読み込みに失敗しました。PNG / JPG / WebP をお試しください。',
+    creditUnit: 'pt',
+    quotaStatus: '本日の残り {rem}/{lim} pt · 選択中のモデル: {cost} pt',
+    quotaInsufficient: '本日の残りポイント（{rem} pt）が不足しています（必要: {cost} pt）。4B モデルに切り替えるか UTC 00:00 のリセットをお待ちください。',
+    globalExhausted: 'サイト全体の本日の無料枠に達しました。UTC 00:00（日本時間 09:00）に自動リセットされます。',
+    servicePaused: '現在メンテナンスのため AI 生成を一時停止しています。',
+    turnstileWaiting: 'セキュリティ確認中…',
+    turnstileRequired: '上のセキュリティ確認を完了してから生成してください',
   },
 };

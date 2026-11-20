@@ -1780,3 +1780,15 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* Turnstile & Quota Feedback */
+.turnstile-slot {
+  display: flex;
+  justify-content: center;
+  min-height: 0;
+}
+
+.need-photo-hint.is-warn {
+  color: #b42318;
+  font-weight: 800;
+}

@@ -20,6 +20,18 @@ import {
   type SavedAvatarItem,
 } from './utils/galleryDb';
 
+export interface QuotaState {
+  generationEnabled: boolean;
+  turnstileEnabled: boolean;
+  turnstileSiteKey: string;
+  day: string;
+  resetAtUtc: string;
+  ipRemaining: number;
+  ipLimit: number;
+  globalExhausted: boolean;
+  globalPercentRemaining: number;
+}
+
 interface StylizeApiResponse {
   imageDataUrl: string;
   prompt: string;
@@ -33,6 +45,7 @@ interface StylizeApiResponse {
   size: number;
   usedStyleRef: boolean;
   durationMs: number;
+  quota?: QuotaState;
 }
 
 const DEFAULT_PARAMS: StylizeParams = {
@@ -75,13 +88,28 @@ export const App: React.FC = () => {
   } | null>(null);
 
   const [gallery, setGallery] = useState<SavedAvatarItem[]>([]);
+  const [quota, setQuota] = useState<QuotaState | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileResetTick, setTurnstileResetTick] = useState<number>(0);
 
   const t = UI_TEXT[locale];
   const activeModel =
     AI_MODELS.find((m) => m.id === params.modelId) ?? AI_MODELS[0];
 
+  const handleTurnstileToken = useCallback((token: string | null) => {
+    setTurnstileToken(token);
+  }, []);
+
   useEffect(() => {
     void loadGalleryItems().then(setGallery);
+    void fetch('/api/quota')
+      .then((r) => (r.ok ? (r.json() as Promise<QuotaState>) : null))
+      .then((q) => {
+        if (q) setQuota(q);
+      })
+      .catch(() => {
+        // ignore network hiccup on initial status fetch
+      });
   }, []);
 
   useEffect(() => {
@@ -182,6 +210,7 @@ export const App: React.FC = () => {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           sourceImageDataUrl: sourceDataUrl,
+          turnstileToken: turnstileToken ?? undefined,
           modelId: params.modelId,
           bgId: params.bgId,
           styleId: params.styleId,
@@ -196,7 +225,12 @@ export const App: React.FC = () => {
 
       const payload = (await resp.json()) as Partial<StylizeApiResponse> & {
         error?: string;
+        quota?: QuotaState;
       };
+
+      if (payload.quota) {
+        setQuota(payload.quota);
+      }
 
       if (!resp.ok || !payload.imageDataUrl) {
         throw new Error(payload.error || `HTTP ${resp.status}`);
@@ -234,8 +268,10 @@ export const App: React.FC = () => {
       );
     } finally {
       setIsGenerating(false);
+      setTurnstileToken(null);
+      setTurnstileResetTick((tick) => tick + 1);
     }
-  }, [activeModel.name, params, sourceDataUrl, sourceThumbUrl]);
+  }, [activeModel.name, params, sourceDataUrl, sourceThumbUrl, turnstileToken]);
 
   const handleLoadHistoryItem = useCallback((item: SavedAvatarItem) => {
     setSourceDataUrl(item.sourceThumbUrl || item.imageDataUrl);
@@ -348,6 +384,10 @@ export const App: React.FC = () => {
             elapsedSec={elapsedSec}
             errorMessage={errorMessage}
             lastMeta={lastMeta}
+            quota={quota}
+            turnstileToken={turnstileToken}
+            turnstileResetTick={turnstileResetTick}
+            onTurnstileToken={handleTurnstileToken}
             onGenerate={() => void handleGenerate()}
           />
         </section>

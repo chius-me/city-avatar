@@ -21,6 +21,8 @@ import {
   type SubjectType,
 } from '../data/presets';
 import { UI_TEXT, pickText } from '../data/i18n';
+import type { QuotaState } from '../App';
+import { TurnstileWidget } from './TurnstileWidget';
 
 export interface StylizeParams {
   modelId: ModelId;
@@ -48,6 +50,10 @@ interface StylizePanelProps {
     seed: number;
     durationMs: number;
   } | null;
+  quota: QuotaState | null;
+  turnstileToken: string | null;
+  turnstileResetTick: number;
+  onTurnstileToken: (token: string | null) => void;
   onGenerate: () => void;
 }
 
@@ -61,6 +67,10 @@ export const StylizePanel: React.FC<StylizePanelProps> = ({
   elapsedSec,
   errorMessage,
   lastMeta,
+  quota,
+  turnstileToken,
+  turnstileResetTick,
+  onTurnstileToken,
   onGenerate,
 }) => {
   const t = UI_TEXT[locale];
@@ -307,44 +317,109 @@ export const StylizePanel: React.FC<StylizePanelProps> = ({
           </div>
         )}
 
-        {/* Primary CTA */}
-        <div className="cta-block">
-          <button
-            type="button"
-            className="city-pill city-pill--primary generate-main-btn"
-            disabled={!hasSourcePhoto || isGenerating}
-            onClick={onGenerate}
-          >
-            <Wand2 size={18} strokeWidth={2.5} />
-            <span>
-              {isGenerating
-                ? `${elapsedSec.toFixed(1)}s…`
-                : hasOutput
-                  ? t.regenerateCta
-                  : t.generateCta}
-            </span>
-          </button>
+        {/* Primary CTA + Security + Daily Credits */}
+        {(() => {
+          const selectedModel =
+            AI_MODELS.find((m) => m.id === params.modelId) ?? AI_MODELS[0];
+          const paused = quota?.generationEnabled === false;
+          const globalExhausted = Boolean(quota?.globalExhausted);
+          const insufficientCredits =
+            quota !== null && selectedModel.creditCost > quota.ipRemaining;
+          const waitingForTurnstile =
+            Boolean(quota?.turnstileEnabled) && !turnstileToken;
+          const ctaDisabled =
+            !hasSourcePhoto ||
+            isGenerating ||
+            paused ||
+            globalExhausted ||
+            insufficientCredits ||
+            waitingForTurnstile;
 
-          {!hasSourcePhoto && (
-            <div className="need-photo-hint">{t.needPhotoHint}</div>
-          )}
+          const showTurnstile =
+            Boolean(quota?.turnstileEnabled && quota.turnstileSiteKey) &&
+            hasSourcePhoto &&
+            !paused &&
+            !globalExhausted;
 
-          {lastMeta && !isGenerating && (
-            <div className="last-meta-row">
-              <span>
-                {lastMeta.modelName} · {(lastMeta.durationMs / 1000).toFixed(1)}s · Seed{' '}
-                <code>{lastMeta.seed}</code>
-              </span>
+          let statusHint: string | null = null;
+          let statusTone: 'muted' | 'warn' = 'muted';
+
+          if (!hasSourcePhoto) {
+            statusHint = t.needPhotoHint;
+          } else if (paused) {
+            statusHint = t.servicePaused;
+            statusTone = 'warn';
+          } else if (globalExhausted) {
+            statusHint = t.globalExhausted;
+            statusTone = 'warn';
+          } else if (insufficientCredits && quota) {
+            statusHint = t.quotaInsufficient
+              .replace('{rem}', String(quota.ipRemaining))
+              .replace('{cost}', String(selectedModel.creditCost));
+            statusTone = 'warn';
+          } else if (waitingForTurnstile) {
+            statusHint = t.turnstileWaiting;
+          } else if (quota) {
+            statusHint = t.quotaStatus
+              .replace('{rem}', String(quota.ipRemaining))
+              .replace('{lim}', String(quota.ipLimit))
+              .replace('{cost}', String(selectedModel.creditCost));
+          }
+
+          return (
+            <div className="cta-block">
+              {showTurnstile && quota && (
+                <TurnstileWidget
+                  siteKey={quota.turnstileSiteKey}
+                  resetSignal={turnstileResetTick}
+                  onToken={onTurnstileToken}
+                />
+              )}
+
               <button
                 type="button"
-                className="city-chip-btn"
-                onClick={() => onChangeParams({ seedInput: String(lastMeta.seed) })}
+                className="city-pill city-pill--primary generate-main-btn"
+                disabled={ctaDisabled}
+                onClick={onGenerate}
               >
-                <Lock size={11} /> {t.lockSeed}
+                <Wand2 size={18} strokeWidth={2.5} />
+                <span>
+                  {isGenerating
+                    ? `${elapsedSec.toFixed(1)}s…`
+                    : hasOutput
+                      ? t.regenerateCta
+                      : t.generateCta}
+                </span>
               </button>
+
+              {statusHint && (
+                <div
+                  className={`need-photo-hint ${
+                    statusTone === 'warn' ? 'is-warn' : ''
+                  }`}
+                >
+                  {statusHint}
+                </div>
+              )}
+
+              {lastMeta && !isGenerating && (
+                <div className="last-meta-row">
+                  <span>
+                    {lastMeta.modelName} · {(lastMeta.durationMs / 1000).toFixed(1)}s · Seed{' '}
+                    <code>{lastMeta.seed}</code>
+                  </span>
+                  <button
+                    type="button"
+                    className="city-chip-btn"
+                    onClick={() => onChangeParams({ seedInput: String(lastMeta.seed) })}
+                  >
+                    <Lock size={11} /> {t.lockSeed}
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          );
+        })()}
       </div>
     </div>
   );

@@ -17,6 +17,9 @@ export interface AiModelOption {
   id: ModelId;
   name: string;
   badge: LocalizedText;
+  creditCost: number;
+  neurons1024: number;
+  neurons768: number;
   defaultSteps?: number;
 }
 
@@ -24,20 +27,33 @@ export const AI_MODELS: AiModelOption[] = [
   {
     id: '@cf/black-forest-labs/flux-2-klein-4b',
     name: 'FLUX.2 [klein] 4B',
-    badge: { zh: '极速推荐', en: 'Fast', ja: '高速' },
+    badge: { zh: '极速推荐 · 1点', en: 'Fast · 1 pt', ja: '高速 · 1pt' },
+    creditCost: 1,
+    neurons1024: 100,
+    neurons768: 60,
   },
   {
     id: '@cf/black-forest-labs/flux-2-klein-9b',
     name: 'FLUX.2 [klein] 9B',
-    badge: { zh: '高精编辑', en: 'HD Edit', ja: '高精度' },
+    badge: { zh: '高精编辑 · 5点', en: 'HD · 5 pts', ja: '高精度 · 5pt' },
+    creditCost: 5,
+    neurons1024: 1400,
+    neurons768: 900,
   },
   {
     id: '@cf/black-forest-labs/flux-2-dev',
     name: 'FLUX.2 [dev]',
-    badge: { zh: '旗舰 18 步', en: 'Flagship', ja: '高画質' },
+    badge: { zh: '旗舰 18 步 · 4点', en: 'Dev · 4 pts', ja: '高画質 · 4pt' },
+    creditCost: 4,
+    neurons1024: 1100,
+    neurons768: 750,
     defaultSteps: 18,
   },
 ];
+
+export function estimateModelNeurons(model: AiModelOption, size: 768 | 1024): number {
+  return size === 768 ? model.neurons768 : model.neurons1024;
+}
 
 export interface BackdropPreset {
   id: string;

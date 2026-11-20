@@ -18,6 +18,38 @@
     "binding": "AI",
     "remote": true
   },
+  "ratelimits": [
+    {
+      "name": "STYLE_BURST_LIMITER",
+      "namespace_id": "202601",
+      "simple": {
+        "limit": 4,
+        "period": 60
+      }
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "QUOTA_GUARD",
+        "class_name": "QuotaGuard"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["QuotaGuard"]
+    }
+  ],
+  "vars": {
+    "GENERATION_ENABLED": "true",
+    "ALLOWED_ORIGINS": "https://avatar.city.chius.dev",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAGJ2h2mDvXum_LZS",
+    "TURNSTILE_HOSTNAMES": "avatar.city.chius.dev",
+    "DAILY_IP_CREDITS": "12",
+    "DAILY_GLOBAL_NEURON_BUDGET": "8500"
+  },
   "routes": [
     {
       "pattern": "avatar.city.chius.dev",
