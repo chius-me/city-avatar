@@ -9,13 +9,13 @@
 Turn any photo of a person, pet, or creature into a ***CITY THE ANIMATION*** official-style avatar with Cloudflare Workers AI.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Deploy](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-me/city-avatar/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/chius-n/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-n/city-avatar/actions/workflows/deploy.yml)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
 ![Workers AI](https://img.shields.io/badge/Workers%20AI-FLUX.2-f38020?logo=cloudflare&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?logo=typescript&logoColor=white)
 
-[Live Demo](https://avatar.city.chius.dev) · [CITY Social Map](https://social.city.chius.dev) · [Issues](https://github.com/chius-me/city-avatar/issues) · [Awesome CITY](https://github.com/chius-me/awesome-citytheanimation)
+[Live Demo](https://avatar.city.chius.dev) · [CITY Social Map](https://social.city.chius.dev) · [Issues](https://github.com/chius-n/city-avatar/issues) · [Awesome CITY](https://github.com/chius-n/awesome-citytheanimation)
 
 </div>
 
@@ -83,8 +83,8 @@ Pushing to `main` also triggers [`.github/workflows/deploy.yml`](.github/workflo
 ## Credits & Sources
 
 - **Visual Aesthetic Reference**: [*CITY THE ANIMATION* Official Website](https://city-the-animation.com/) (`city-the-animation.com/character/`).
-- **Curated Resources**: [`chius-me/awesome-citytheanimation`](https://github.com/chius-me/awesome-citytheanimation).
-- **Sister Project**: [`chius-me/city-social-map`](https://github.com/chius-me/city-social-map) ([`social.city.chius.dev`](https://social.city.chius.dev)).
+- **Curated Resources**: [`chius-n/awesome-citytheanimation`](https://github.com/chius-n/awesome-citytheanimation).
+- **Sister Project**: [`chius-n/city-social-map`](https://github.com/chius-n/city-social-map) ([`social.city.chius.dev`](https://social.city.chius.dev)).
 - **AI Inference**: Cloudflare Workers AI (`@cf/black-forest-labs/flux-2-klein-4b`, `flux-2-klein-9b`, `flux-2-dev`).
 
 ## 📄 License
