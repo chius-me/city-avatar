@@ -9,13 +9,13 @@
 上传任意人物、宠物或生物照片，通过 Cloudflare Workers AI 一键风格化为 ***CITY THE ANIMATION*** 官网角色同款头像。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Deploy](https://github.com/chius-n/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-n/city-avatar/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/chius-cc/city-avatar/actions/workflows/deploy.yml/badge.svg)](https://github.com/chius-cc/city-avatar/actions/workflows/deploy.yml)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020?logo=cloudflare&logoColor=white)
 ![Workers AI](https://img.shields.io/badge/Workers%20AI-FLUX.2-f38020?logo=cloudflare&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6?logo=typescript&logoColor=white)
 
-[在线体验](https://avatar.city.chius.dev) · [CITY 人物关系图](https://social.city.chius.dev) · [问题反馈](https://github.com/chius-n/city-avatar/issues) · [Awesome CITY](https://github.com/chius-n/awesome-citytheanimation)
+[在线体验](https://avatar.city.chius.dev) · [CITY 人物关系图](https://social.city.chius.dev) · [问题反馈](https://github.com/chius-cc/city-avatar/issues) · [Awesome CITY](https://github.com/chius-cc/awesome-citytheanimation)
 
 </div>
 
@@ -83,8 +83,8 @@ npm run deploy     # 构建并部署至 Cloudflare Workers
 ## 参考与致谢
 
 - **视觉风格参考**：[《CITY THE ANIMATION》官方网站](https://city-the-animation.com/)（`city-the-animation.com/character/`）。
-- **精选资料清单**：[`chius-n/awesome-citytheanimation`](https://github.com/chius-n/awesome-citytheanimation)。
-- **姊妹项目**：[`chius-n/city-social-map`](https://github.com/chius-n/city-social-map)（[`social.city.chius.dev`](https://social.city.chius.dev)）。
+- **精选资料清单**：[`chius-cc/awesome-citytheanimation`](https://github.com/chius-cc/awesome-citytheanimation)。
+- **姊妹项目**：[`chius-cc/city-social-map`](https://github.com/chius-cc/city-social-map)（[`social.city.chius.dev`](https://social.city.chius.dev)）。
 - **AI 模型支持**：Cloudflare Workers AI（`@cf/black-forest-labs/flux-2-klein-4b`、`flux-2-klein-9b`、`flux-2-dev`）。
 
 ## 📄 许可证
